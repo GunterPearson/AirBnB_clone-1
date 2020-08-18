@@ -12,18 +12,20 @@ def do_deploy(archive_path):
     """ deploy archive in servers"""
     if os.path.isfile(archive_path) is False:
         return False
-    split = archive_path.split('/')
-    name = split[-1]
-    long_name = name[:-4]
-    put(archive_path, "/tmp/")
-    run("mkdir -p /data/web_static/releases/{}".format(long_name))
-    run("tar -xzf /tmp/{} -C /data/".format(name) +
-        "web_static/releases/{}/".format(long_name))
-    run("rm /tmp/{}".format(name))
-    run("mv /data/web_static/releases/{}/".format(long_name) +
-        "web_static/* /data/web_static/releases/{}/".format(long_name))
-    run("rm -rf /data/web_static/releases/{}/web_static".format(long_name))
-    run("rm -rf /data/web_static/current")
-    run("ln -s /data/web_static/releases/{}/ ".format(long_name) +
-        "/data/web_static/current")
+    file = archive_path.split("/")[-1]
+    name = file.split(".")[0]
+    try:
+        put(archive_path, "/tmp/{}".format(file))
+        run("mkdir -p /data/web_static/releases/{}/".format(name))
+        run("tar -xzf /tmp/{} -C /data/web_static/releases/{}/".format(
+            file, name))
+        run("rm /tmp/{}".format(file))
+        run("mv /data/web_static/releases/{}/web_static/* \
+            /data/web_static/releases/{}/".format(name, name))
+        run("rm -rf /data/web_static/releases/{}/web_static".format(name))
+        run("rm -rf /data/web_static/current")
+        run("ln -s /data/web_static/releases/{}/ /data/web_static/current".
+            format(name))
+    except:
+        return False
     return True
