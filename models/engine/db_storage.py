@@ -3,7 +3,7 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import create_engine
 from os import getenv
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 from models.user import User
 from models.state import State
 from models.city import City
@@ -61,3 +61,7 @@ class DBStorage:
         sesh = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(sesh)
         self.__session = Session()
+
+    def close(self):
+        """ close session """
+        self.__session.close()
