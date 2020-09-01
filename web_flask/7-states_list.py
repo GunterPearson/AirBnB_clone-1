@@ -10,6 +10,7 @@ def tear_down(arg):
     """ tear down current session"""
     storage.close()
 
+
 @app.route('/states_list', strict_slashes=False)
 def states_list():
     """ render state list """
