@@ -15,8 +15,13 @@ def tear_down(arg):
 def hbnb_filter():
     """ for hbnb_project """
     states = storage.all("State")
-    return render_template("10-hbnb_filters.html", states=states)
+    amenities = storage.all("Amenity")
+    return render_template("10-hbnb_filters.html",
+                        states=states, amenities=amenities)
 
 
-if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+if __name__ == '__main__':
+    app.jinja_env.auto_reload = True
+    app.config['ENV'] = 'development'
+    app.config['TESTING'] = True
+    app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=True)
