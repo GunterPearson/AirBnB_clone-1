@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 """ send archive to servers"""
+# to execute run this:
+# fab -f 2-do_deploy_web_static.py do_deploy:archive_path=versions/web_static_20170315003959.tgz -i ~/.ssh/id_rsa -u ubuntu
 import os.path
 from fabric.api import env
 from fabric.api import put

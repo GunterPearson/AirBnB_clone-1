@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-""" using fabric"""
+""" using fabric """
+# to execute run this:
+# fab -f 1-pack_web_static.py do_pack
 import os.path
 from datetime import datetime
 from fabric.api import local

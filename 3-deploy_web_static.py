@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 """ using fabric"""
+# to execute run this:
+# fab -f 3-deploy_web_static.py deploy -i ~/.ssh/id_rsa -u ubuntu
 import os.path
 from datetime import datetime
 from fabric.api import local
