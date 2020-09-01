@@ -1,5 +1,11 @@
 #!/usr/bin/python3
 """ Console Module """
+# to run with json file execute command:
+# ./console
+# to run with mysql db execute command 3 lines below as one:
+# HBNB_MYSQL_USER=hbnb_dev HBNB_MYSQL_PWD=hbnb_dev_pwd
+# HBNB_MYSQL_HOST=localhost
+# HBNB_MYSQL_DB=hbnb_dev_db HBNB_TYPE_STORAGE=db ./console.py
 import cmd
 import sys
 from models.base_model import BaseModel
@@ -335,6 +341,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()

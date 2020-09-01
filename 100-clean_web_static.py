@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 """ Fabfile to delete out-of-date archives. """
 # to execute run:
-# fab -f 100-clean_web_static.py do_clean:number=2 -i my_ssh_private_key -u ubuntu > /dev/null 2>&1
+# fab -f 100-clean_web_static.py
+# do_clean:number=2 -i ~/.ssh/id_rsa
+# -u ubuntu > /dev/null 2>&1
 from fabric.operations import local, run
 from fabric.state import env
 

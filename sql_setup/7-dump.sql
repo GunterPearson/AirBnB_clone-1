@@ -1,3 +1,7 @@
+-- TO GIVE DATABASE INFO TO USE for TESTING
+-- RUN COMMAND:
+-- cat 7-dump.sql | mysql -uroot -p
+
 -- MySQL dump 10.13  Distrib 5.7.8-rc, for Linux (x86_64)
 --
 -- Host: localhost    Database: hbnb_dev_db
