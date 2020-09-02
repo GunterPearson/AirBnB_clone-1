@@ -32,6 +32,7 @@
 	list-style-type: none;
 	overflow: scroll;
 	max-height: 300px;
+
 	display: none;
 	background-color: #FAFAFA;
 	width: 100%;
@@ -56,11 +57,13 @@ ul li {
 	list-style-type: none;
 	justify-content: space-around;
 	padding: 0px;
+	padding-left: 10px;
 	padding-bottom: 20px;
 }
 
 li strong {
-	text-align: center;
+	text-align: left;
+	font-size: large;
 }
 
 h2 {

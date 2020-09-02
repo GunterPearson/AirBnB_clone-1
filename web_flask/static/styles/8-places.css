@@ -1,6 +1,8 @@
 .places {
 	display: flex;
 	justify-content: center;
+	z-index: -1;
+	position: relative;
 	flex-wrap: wrap;
 	margin: 45px auto;
 	text-align: center;
@@ -31,6 +33,11 @@ article {
 
 	height: 80px;	
 	width: 100%;
+}
+
+.headline h2 {
+	padding-right: 60px;
+	text-align: left;
 }
 
 .price_by_night {
