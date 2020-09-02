@@ -10,10 +10,11 @@ from os import getenv
 class State(BaseModel, Base):
     """ State class """
     __tablename__ = "states"
-    name = Column(String(128), nullable=False)
-    cities = relationship("City", backref="state", cascade="delete")
 
-    if getenv("HBNB_TYPE_STORAGE") != "db":
+    if getenv("HBNB_TYPE_STORAGE") == 'db':
+        name = Column(String(128), nullable=False)
+        cities = relationship('City', cascade='all, delete', backref='state')
+    else:
         @property
         def cities(self):
             """ getter attriute for cities"""
