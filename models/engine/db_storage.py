@@ -1,69 +1,81 @@
 #!/usr/bin/python3
-""" New file storage"""
-from models.base_model import BaseModel, Base
-from sqlalchemy import create_engine
-from os import getenv
-from sqlalchemy.orm import sessionmaker, scoped_session
+
+"""
+Database Storage module
+"""
+from sqlalchemy import Column, Table
+import os
 from models.user import User
 from models.state import State
-from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
+from models.city import City
+from models.base_model import BaseModel, Base
 
 
 class DBStorage:
-    """ new sql file storage system """
+    """ DataBase Storage class """
     __engine = None
     __session = None
 
     def __init__(self):
-        """Set up engine"""
-        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}"
-                                      .format(getenv("HBNB_MYSQL_USER"),
-                                              getenv("HBNB_MYSQL_PWD"),
-                                              getenv("HBNB_MYSQL_HOST"),
-                                              getenv("HBNB_MYSQL_DB")),
-                                      pool_pre_ping=True)
-        if getenv("HBNB_ENV") == "test":
+        """ Time to make some shit """
+        from sqlalchemy import create_engine
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
+                        os.getenv('HBNB_MYSQL_USER'),
+                        os.getenv('HBNB_MYSQL_PWD'),
+                        os.getenv('HBNB_MYSQL_HOST'),
+                        os.getenv('HBNB_MYSQL_DB'), pool_pre_ping=True))
+        if os.getenv('HBNB_ENV') == "test":
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """ all method for Db storage class"""
-        if cls:
-            if type(cls) == str:
-                cls = eval(cls)
-            objs = self.__session.query(cls)
+        """ Doing all of something """
+        types = {
+                'BaseModel': BaseModel, 'User': User, 'Place': Place,
+                'State': State, 'City': City, 'Amenity': Amenity,
+                'Review': Review
+            }
+        if cls is not None and cls != "":
+            the_type = types.get(cls)
+            result = self.__session.query(the_type).all()
         else:
-            objs = self.__session.query(State).all()
-            objs += self.__session.query(City).all()
-            objs += self.__session.query(User).all()
-            objs += self.__session.query(Place).all()
-            objs += self.__session.query(Review).all()
-            objs += self.__session.query(Amenity).all()
-        return {"{}.{}".format(type(x).__name__, x.id): x for x in objs}
+            result = self.__session.query(State).all()
+            result = result + self.__session.query(City).all()
+            result = result + self.__session.query(User).all()
+            result = result + self.__session.query(Place).all()
+            result = result + self.__session.query(Review).all()
+            result = result + self.__session.query(Amenity).all()
+        return_dict = {}
+        for item in result:
+            key = item.__class__.__name__ + "." + item.id
+            value = item
+            return_dict.update({key: value})
+        return return_dict
 
     def new(self, obj):
-        """add object to current __session"""
-        self.__session.add(obj)
+        """ Adds a new object to the database """
+        if obj is not None:
+            self.__session.add(obj)
 
     def save(self):
-        """ commit all changes of the current database session"""
+        """ Saves the new stuff or whatever idk I'm drunk """
         self.__session.commit()
 
-    def delete(self, obj=None):
-        """ delete from the current database session obj"""
-        if obj:
+    def delete(self, obj):
+        """ Deletes the object from DB Cooper """
+        if obj is not None:
             self.__session.delete(obj)
 
     def reload(self):
-        """ reaload all for session"""
-        from sqlalchemy.orm import scoped_session
+        """ Lock and reload """
+        from sqlalchemy.orm import sessionmaker, scoped_session
         Base.metadata.create_all(self.__engine)
-        sesh = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        Session = scoped_session(sesh)
+        sesh_thing = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        Session = scoped_session(sesh_thing)
         self.__session = Session()
 
     def close(self):
-        """ close session """
+        """ Docstring for close method """
         self.__session.close()
